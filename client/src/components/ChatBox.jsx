@@ -8,7 +8,17 @@ const ChatBox = () => {
 const {selectedChat, theme} = useAppContext()
 
 const [messages, setMessages] = useState([])
+// if i set the loading == true
 const [loading, setLoading] = useState(false)
+
+// state for prompt
+const [prompt,setPrompt] = useState('')
+const [mode, setMode] = useState('text')
+const [ispublished, setIsPublished] = useState(false)
+
+const onSubmit = async (e) => {
+  e.preventDefault()
+}
 
 // messages that displaye in chatBox
 useEffect(()=> {
@@ -33,10 +43,30 @@ useEffect(()=> {
          )}
 
          {messages.map((message, index)=> <Message key={index} message={message} />)}
+
+         {/* three dot loading animation */}
+         {
+          loading && <div className='loader flex items-center gap-1.5'>
+               <div className='w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce'></div>
+               <div className='w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce'></div>
+               <div className='w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce'></div>
+          </div>
+         }
       </div>
 
-      <form>
+{/* prompt input box */}
+      <form onSubmit={onSubmit} className='bg-primary/20 dark:bg-[#583C79]/30 border border-primary dark:border-[#80609F]/30 rounded-full w-full max-w-3xl p-3 pl-4 mx-auto flex gap-4 items-center'>
+        <select onChange={(e)=>setMode(e.target.value)} value={mode} className='text-sm pl-3 pr-2 outline-none'>
+          <option className='dark:bg-purple-900 p-3 rounded' value="text">Text</option>
+          <option className='dark:bg-purple-900 p-3 rounded' value="image">Image</option>
+        </select>
+        <input onChange={(e)=>setPrompt(e.target.value)} value={prompt} type="text" placeholder='Type your prompt here...' className='flex-1 w-full text-sm outline-none' required />
 
+{/* when the loading is true we cannot enable the button */}
+        <button disabled={loading}>
+          <img src={loading? assets.stop_icon : assets.send_icon} alt=""
+          className='w-8 cursor-pointer' />
+        </button>
       </form>
     </div>
   )

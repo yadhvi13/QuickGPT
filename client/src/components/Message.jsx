@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { assets } from '../assets/assets'
 import moment from 'moment'
 import Markdown from 'react-markdown'
+import Prism from 'prismjs'
 
 const Message = ({message}) => {
+// when the message changes it will execute this function
+  useEffect(()=>{
+
+  }, [message.content])
+
   return (
     <div>
      {message.role === 'user' ? (
